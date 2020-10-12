@@ -1,0 +1,17 @@
+<div class="title" [ngStyle]="titleStyle">
+  <p [innerText]="title"></p>
+</div>
+
+<div class="row justify-content-center">
+  <div [ngStyle]="chessContainerStyle">
+    <div class="embed-responsive embed-responsive-1by1 text-center">
+      <div class="embed-responsive-item">
+        <div class="row" *ngFor="let space of spaces; let i=index">
+          <div [ngStyle]="boxStyle" *ngFor="let s of space; let j=index" [style.background-color]="(i+j) %2 === 0 ? '#ffce9e' : '#d18b47'">
+            <!-- <span style="color:chartreuse">{{i}},{{j}}</span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

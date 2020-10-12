@@ -1,1 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    background-color: #000 !important;
+    text-align: center;
+}
+
+.row{
+    margin : 0px !important;
+}
+
+.title{
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 0 5px #fff,
+                 0 0 10px #fff,
+                 0 0 15px #b44343,
+                 0 0 20px #c74a4a,
+                 0 0 25px #bc4646,
+                 0 0 30px #b84444,
+                 0 0 35px #b94545;
+}
+
+.chess-container{
+    width: 500px;
+    height: 500px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 1px solid #000 !important;
+}
+
+.row{
+    width: 100%;
+}
+.box{
+    width: 50px;
+    background-color: #b44343;
+}
+
+/* 500000 */
