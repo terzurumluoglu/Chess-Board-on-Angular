@@ -8,11 +8,17 @@ import { Component, HostListener, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'Chess Board';
 
-  k: number = 0.75; // Ekran Sabiti
-  size: number;     // Kısa Kenar Uzunluğu
-  borderSize: number;
+  boardLength : number = 8;  // Board 8x8
+  pk: number = 0.75;         // Oyun Alanı Ekranın %75' inde
+  tk: number = 0.25          // Title Alanı Ekranın %25' inde 
+  
+  boardSize: number;         // Kısa Kenar Uzunluğu
+  boardBorderSize: number;
 
-  chessContainerStyle: any;
+  boxSize: number;
+  boxMarginSize : number;
+
+  boardStyle: any;
   boxStyle: any;
   titleStyle: any;
 
@@ -20,51 +26,58 @@ export class AppComponent implements OnInit {
   constructor() { }
   ngOnInit() {
     this.spaces = this.createPlayGround();
-    this.size = this.getSize() * this.k;
-    this.borderSize = this.size * 0.01;
+    this.calculate();
     this.setStyle();
   }
 
-  getSize(): number {
+  calculate() {
+    this.boardSize = this.getSmallSideSize() * this.pk;
+    this.boardBorderSize = this.boardSize * 0.01;
+
+    this.boxMarginSize =  this.boardBorderSize * 0.5;
+    let containerBorderSize : number = this.boardBorderSize * 2;
+    let containerPaddingSize : number = this.boardBorderSize * 2;
+    this.boxSize = (this.boardSize - containerBorderSize - containerPaddingSize) / this.boardLength  - this.boxMarginSize * 2;
+  }
+
+  getSmallSideSize(): number {
     return window.innerWidth <= window.innerHeight ? window.innerWidth : window.innerHeight;
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.size = this.getSize() * this.k;
-    this.borderSize = this.size * 0.01;
+  onResize() {
+    this.calculate();
     this.setStyle();
   }
 
   setStyle() {
-    this.chessContainerStyle = {
-      'height': this.size + 'px',
-      'width': this.size + 'px',
-      'padding': this.borderSize + 'px',
-      'border': this.borderSize + 'px solid #500000'
+    this.boardStyle = {
+      'height': this.boardSize + 'px',
+      'width': this.boardSize + 'px',
+      'padding': this.boardBorderSize + 'px',
+      'border': this.boardBorderSize + 'px solid #500000'
     };
 
     this.boxStyle = {
-      'height': (this.size - (this.borderSize * 4)) * 0.125 - this.borderSize + 'px',
-      'width': (this.size - (this.borderSize * 4)) * 0.125 - this.borderSize + 'px',
-      'margin': (this.borderSize * 0.5) + 'px',
-      'cursor': 'pointer'
+      'height':this.boxSize + 'px',
+      'width': this.boxSize + 'px',
+      'margin': this.boxMarginSize + 'px'
     };
 
-    const t : number = this.getSize() * (1 - this.k) * 0.2;
+    const t: number = this.getSmallSideSize() * this.tk * 0.2;
 
     this.titleStyle = {
       'margin-top': t + 'px',
-      'margin-bottom' : t * 0.5 + 'px',
+      'margin-bottom': t * 0.5 + 'px',
       'padding': t * 0.3 + 'px',
-      'font-size' : t + 'px'
+      'font-size': t + 'px'
     }
   }
 
   createPlayGround(): any[][] {
-    let playGround: any[][] = new Array(10);
-    for (let i = 0; i < 8; i++) {
-      playGround[i] = new Array(8);
+    let playGround: any[][] = new Array(this.boardLength);
+    for (let i = 0; i < this.boardLength; i++) {
+      playGround[i] = new Array(this.boardLength);
     }
     return playGround;
   }
